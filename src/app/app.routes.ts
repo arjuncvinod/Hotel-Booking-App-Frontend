@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from './core/layouts/admin-layout/admin-layout.c
 import { HeroComponent } from './features/home/hero/hero.component';
 import { SearchResultsComponent } from './features/home/search-results/search-results.component';
 import { adminGuard } from './guards/admin.guard';
+import { HotelDetailsComponent } from './features/home/hotel-details/hotel-details.component';
 
 export const routes: Routes = [
     {
@@ -14,7 +15,7 @@ export const routes: Routes = [
         children:[
             {path:'',component:HeroComponent},
             {path:'search',component:SearchResultsComponent},
-            // {path:'hotel',}
+            {path:'hotel',component:HotelDetailsComponent}
         ]
     },
     {

@@ -23,6 +23,7 @@
     
     @for (item of hotels; track $index) {
     <app-hotel-card
+      [id]="item.id"
       [name]="item.name"
       [location]="item.city"
       [price]="item.lowestRoomPrice"

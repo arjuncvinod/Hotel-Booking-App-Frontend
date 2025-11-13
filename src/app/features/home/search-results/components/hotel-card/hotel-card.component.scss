@@ -3,13 +3,13 @@
   background: white;
   border-radius: 8px;
   overflow: hidden;
-border: 1px solid #e5e7eb;
+border: 2px solid #e5e7eb;
   transition: box-shadow 0.1s ease, transform 0.3s ease;
   margin-bottom: 1rem;
 
 
   &:hover {
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
   }
 }
 

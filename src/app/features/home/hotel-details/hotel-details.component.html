@@ -1,0 +1,49 @@
+
+<div class="hotel-details-container">
+  <button class="back-btn" (click)="goBack()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 12H5m7-7l-7 7 7 7"/>
+    </svg>
+    Back
+  </button>
+
+  @for (hotel of hotels; track $index) {
+    <div class="hotel-detail-card">
+      <!-- Hotel Header -->
+      <div class="hotel-header">
+        <div class="hotel-info">
+          <h1 class="hotel-name">{{ hotel.name }}</h1>
+          <p class="hotel-address">{{ hotel.address }}, {{ hotel.country }}</p>
+          <p class="hotel-phone">📞 {{ hotel.phoneNumber }}</p>
+          <div class="hotel-stats">
+            <span class="stat-badge">{{ hotel.availableRoomsCount }} rooms available</span>
+            <span class="rating-badge">⭐ {{ hotel.averageRating }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Available Rooms Section -->
+      <div class="rooms-section">
+        <h2 class="section-title">Available Rooms</h2>
+        <div class="rooms-grid">
+          @for (room of hotel.availableRooms; track room.id) {
+            <div class="room-card">
+              <div class="room-header">
+                <h3 class="room-number">Room {{ room.roomNumber }}</h3>
+                <span class="room-id">#{{ room.id }}</span>
+              </div>
+              <div class="room-details">
+                <p class="room-price">
+                  <span class="price-label">From</span>
+                  <span class="price-amount">${{ room.pricePerNight }}</span>
+                  <span class="price-unit">per night</span>
+                </p>
+              </div>
+              <button class="book-btn">Book Now</button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

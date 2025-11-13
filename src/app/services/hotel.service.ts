@@ -16,10 +16,17 @@ export class HotelService {
       .set('checkInDate', checkIn)
       .set('checkOutDate', checkOut)
       .set('price', price)
-      .set('sort',sort );;
+      .set('sort',sort );
 
+    return this.http.get(`${environment.apiUrl}/hotel/available-rooms`, { params });
+  }
 
-
+  getHotelDetails(hotelId:string,location:string,checkIn:string,checkOut:string): Observable<any> {
+    const params = new HttpParams()
+      .set('hotelId', hotelId)
+      .set('location', location)
+      .set('checkInDate', checkIn)
+      .set('checkOutDate', checkOut);
 
     return this.http.get(`${environment.apiUrl}/hotel/available-rooms`, { params });
   }
