@@ -1,0 +1,30 @@
+<div class="search-container">
+  <div class="sidebar">
+    <app-search-info />
+    <app-search-filter />
+  </div>
+  <div class="search-results">
+    <div class="search-header">
+      <h3>{{ location }}: {{ hotels.length }} hotels found</h3>
+      <div class="sort">
+        <label for="sort-by">Sort by:</label>
+        <select id="sort-by" (change)="onSortChange($any($event).target.value)">
+            <option value="recommended">Recommended</option>
+          <option value="pricing">Price (low to high)</option>
+          <option value="rating">Guest Rating</option>
+        </select>
+      </div>
+    </div>
+    @if (hotels.length<=0) { No items found } 
+    
+    @for (item of hotels; track $index) {
+    <app-hotel-card
+      [name]="item.name"
+      [location]="item.city"
+      [price]="item.lowestRoomPrice"
+      [score]="item.averageRating"
+    />
+
+    }
+  </div>
+</div>

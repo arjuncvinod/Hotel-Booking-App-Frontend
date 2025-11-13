@@ -1,0 +1,47 @@
+<div class="search-info-card">
+  <h3 class="card-title">Your Search</h3>
+  
+  <div class="info-section">
+    <label class="info-label">Destination</label>
+    <input 
+      *ngIf="isEditing()" 
+      type="text" 
+      class="info-input"
+      [(ngModel)]="location"
+    />
+    <p *ngIf="!isEditing()" class="info-value">{{ location }}</p>
+  </div>
+
+  <div class="date-section">
+    <div class="date-group">
+      <label class="info-label">Check-in</label>
+      <input 
+        *ngIf="isEditing()" 
+        type="date" 
+        class="info-input"
+        [(ngModel)]="checkIn"
+      />
+      <p *ngIf="!isEditing()" class="info-value">{{ checkIn }}</p>
+    </div>
+    <div class="date-group">
+      <label class="info-label">Check-out</label>
+      <input 
+        *ngIf="isEditing()" 
+        type="date" 
+        class="info-input"
+        [(ngModel)]="checkOut"
+      />
+      <p *ngIf="!isEditing()" class="info-value">{{ checkOut }}</p>
+    </div>
+  </div>
+
+
+  <button *ngIf="!isEditing()" class="change-search-btn" (click)="toggleEdit()">
+    Change Search
+  </button>
+
+  <button *ngIf="isEditing()" class="apply-changes-btn" (click)="toggleEdit();navigate()">
+    Apply Changes
+  </button>
+</div>
+

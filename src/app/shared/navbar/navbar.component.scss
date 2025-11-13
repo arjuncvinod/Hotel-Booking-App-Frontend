@@ -1,0 +1,79 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+
+
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      color: #2563eb;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+
+      .logo-stay {
+        color: #2563eb;
+      }
+
+      .logo-hub {
+        color:  #1e4db5;
+        font-weight: 500;
+      }
+    }
+    svg{
+        width: 30px;
+        height: 30px;
+        color: #2563eb;
+    }
+  }
+
+  .sign-in-btn {
+    padding: 0.6rem 1.5rem;
+    border: 2px solid #2563eb;
+    background: white;
+    color: #2563eb;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #2563eb;
+      color: white;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem 1.5rem;
+
+    .logo {
+      font-size: 1.25rem;
+
+      .icon {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+}
