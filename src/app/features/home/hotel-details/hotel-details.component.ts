@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HotelService } from '../../../services/hotel.service';
 
@@ -20,7 +20,7 @@ export class HotelDetailsComponent {
 
   isLoading = signal(true);
 
-  constructor(private route: ActivatedRoute, private hotelService: HotelService, private location: Location) { }
+  constructor(private route: ActivatedRoute, private hotelService: HotelService, private location: Location, private router: Router) { }
 
   ngOnInit() {
     this.route.queryParamMap.subscribe(params => {
@@ -46,5 +46,11 @@ export class HotelDetailsComponent {
 
   goBack() {
     this.location.back();
+  }
+
+  goToPayment(roomId: number, totalAmount: number) {
+    this.router.navigate(['/payments/checkout'],{
+      state: { roomId, hotelId: this.id, checkIn: this.checkIn, checkOut: this.checkOut,customerId:1027,status:0, totalAmount: totalAmount }
+     } );
   }
 }

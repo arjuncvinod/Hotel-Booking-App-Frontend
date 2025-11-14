@@ -7,6 +7,7 @@ import { HeroComponent } from './features/home/hero/hero.component';
 import { SearchResultsComponent } from './features/home/search-results/search-results.component';
 import { adminGuard } from './guards/admin.guard';
 import { HotelDetailsComponent } from './features/home/hotel-details/hotel-details.component';
+import { PaymentCheckoutComponent } from './features/home/payment-checkout/payment-checkout.component';
 
 export const routes: Routes = [
     {
@@ -15,7 +16,8 @@ export const routes: Routes = [
         children:[
             {path:'',component:HeroComponent},
             {path:'search',component:SearchResultsComponent},
-            {path:'hotel',component:HotelDetailsComponent}
+            {path:'hotel',component:HotelDetailsComponent},
+            {path:'payments/checkout',component:PaymentCheckoutComponent}
         ]
     },
     {

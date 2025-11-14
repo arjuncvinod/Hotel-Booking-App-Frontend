@@ -9,7 +9,7 @@
 
   @for (hotel of hotels; track $index) {
     <div class="hotel-detail-card">
-      <!-- Hotel Header -->
+
       <div class="hotel-header">
         <div class="hotel-info">
           <h1 class="hotel-name">{{ hotel.name }}</h1>
@@ -22,7 +22,6 @@
         </div>
       </div>
 
-      <!-- Available Rooms Section -->
       <div class="rooms-section">
         <h2 class="section-title">Available Rooms</h2>
         <div class="rooms-grid">
@@ -34,12 +33,12 @@
               </div>
               <div class="room-details">
                 <p class="room-price">
-                  <span class="price-label">From</span>
+                  <!-- <span class="price-label">From</span> -->
                   <span class="price-amount">${{ room.pricePerNight }}</span>
                   <span class="price-unit">per night</span>
                 </p>
               </div>
-              <button class="book-btn">Book Now</button>
+              <button class="book-btn" (click)="goToPayment(room.id,room.pricePerNight)">Book Now</button>
             </div>
           }
         </div>

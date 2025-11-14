@@ -1,0 +1,55 @@
+<div class="checkout-container">
+  <div class="checkout-wrapper">
+    <!-- Header -->
+    <div class="checkout-header">
+      <h1 class="checkout-title">Payment Checkout</h1>
+      <p class="checkout-subtitle">Complete your booking payment</p>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="order-summary">
+      <h2 class="summary-title">Booking Summary</h2>
+      
+      <div class="summary-item">
+        <span class="summary-label">Room ID</span>
+        <span class="summary-value">#{{ roomId }}</span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">Customer ID</span>
+        <span class="summary-value">#{{ customerId }}</span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">Check-in Date</span>
+        <span class="summary-value">{{ checkIn }}</span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">Check-out Date</span>
+        <span class="summary-value">{{ checkOut }}</span>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <!-- Total Amount -->
+      <div class="total-amount">
+        <span class="total-label">Total Amount</span>
+        <span class="total-price">${{ totalAmount }}</span>
+      </div>
+
+      <!-- Payment Button -->
+      <div class="button-group">
+        <button class="payment-btn" (click)="makePayment()">
+          Complete Payment
+        </button>
+        <button class="cancel-btn" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
