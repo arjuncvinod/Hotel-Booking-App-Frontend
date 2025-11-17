@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError, timer } from 'rxjs';
-import { tap, catchError, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
-export interface AuthResponse {
+interface AuthResponse {
   accessToken: string;
-  refreshToken: string;
 }
 
 interface JwtPayload {
-  exp: number;
+  email: string;
   role: string;
+  exp: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private userSubject = new BehaviorSubject<any>(null);
-  user$ = this.userSubject.asObservable();
-  private refreshTimer?: any;
+  private userSubject = new BehaviorSubject<JwtPayload | null>(null);
+  public user$ = this.userSubject.asObservable();
+  private isRefreshing = false;
 
   constructor(private http: HttpClient) {
     this.loadToken();
@@ -28,29 +28,35 @@ export class AuthService {
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, { email, password })
       .pipe(
-        tap(res => this.setSession(res)),
+        tap(res => this.updateToken(res.accessToken)),
         catchError(err => {
-          console.error('Login failed', err);
-          alert('Login failed');
+          console.error('Login failed:', err);
           return throwError(() => err);
         })
       );
   }
 
-  private setSession(res: AuthResponse) {
-    localStorage.setItem('access_token', res.accessToken);
-    localStorage.setItem('refresh_token', res.refreshToken);
-    this.userSubject.next(jwtDecode(res.accessToken));
-    this.startRefreshTimer();
+  private updateToken(accessToken: string) {
+    localStorage.setItem('access_token', accessToken);
+    try {
+      const payload = jwtDecode<JwtPayload>(accessToken);
+      this.userSubject.next(payload);
+    } catch {
+      this.logout();
+    }
   }
 
   private loadToken() {
     const token = localStorage.getItem('access_token');
     if (token) {
       try {
-        this.userSubject.next(jwtDecode(token));
-        this.startRefreshTimer();
-      } catch (e) {
+        const payload = jwtDecode<JwtPayload>(token);
+        if (payload.exp * 1000 > Date.now()) {
+          this.userSubject.next(payload);
+        } else {
+          this.logout();
+        }
+      } catch {
         this.logout();
       }
     }
@@ -60,54 +66,53 @@ export class AuthService {
     return localStorage.getItem('access_token');
   }
 
+  isLoggedIn(): boolean {
+    return this.userSubject.value !== null;
+  }
+
   isAdmin(): boolean {
-    const user = this.userSubject.value;
-    return user?.role === 'Admin';
+    return this.userSubject.value?.role === 'Admin';
   }
 
-  private startRefreshTimer() {
-    this.stopRefreshTimer();
-    const token = this.getToken();
-    if (!token) return;
+  isCustomer(): boolean {
+    return this.userSubject.value?.role === 'Customer';
+  }
 
-    const payload = jwtDecode<JwtPayload>(token);
-    const expiresIn = payload.exp * 1000 - Date.now();
-    const refreshAt = expiresIn - 60_000; // 1 min before expiry
-
-    if (refreshAt > 0) {
-      this.refreshTimer = setTimeout(() => {
-        this.refreshToken().subscribe();
-      }, refreshAt);
-    } else {
-      this.refreshToken().subscribe();
+  refreshToken(): Observable<{ accessToken: string }> {
+    if (this.isRefreshing) {
+      return new Observable(observer => {
+        const check = setInterval(() => {
+          if (!this.isRefreshing) {
+            clearInterval(check);
+            observer.next({ accessToken: this.getToken()! });
+            observer.complete();
+          }
+        }, 50);
+      });
     }
-  }
 
-  private stopRefreshTimer() {
-    if (this.refreshTimer) clearTimeout(this.refreshTimer);
-  }
-
-  refreshToken(): Observable<AuthResponse> {
-    const refreshToken = localStorage.getItem('refresh_token');
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, {
-      accessToken: this.getToken(),
-      refreshToken
-    }).pipe(
-      tap(res => this.setSession(res)),
-      catchError(err => {
-        this.logout();
-        return throwError(() => err);
-      })
-    );
+    this.isRefreshing = true;
+    return this.http.post<{ accessToken: string }>(`${environment.apiUrl}/auth/refresh`, {}, { 
+      withCredentials: true 
+    })
+      .pipe(
+        tap(res => {
+          this.updateToken(res.accessToken);
+          this.isRefreshing = false;
+        }),
+        catchError(err => {
+          this.isRefreshing = false;
+          this.logout();
+          return throwError(() => err);
+        })
+      );
   }
 
   logout() {
-    const refreshToken = localStorage.getItem('refresh_token');
-    if (refreshToken){
-    this.http.post(`${environment.apiUrl}/auth/revoke`, { refreshToken }).subscribe();
-    localStorage.clear();
-    }
+    this.http.post(`${environment.apiUrl}/auth/logout`, {}).subscribe({
+      error: () => console.warn('Already logged out')
+    });
+    localStorage.removeItem('access_token');
     this.userSubject.next(null);
-    this.stopRefreshTimer();
   }
 }

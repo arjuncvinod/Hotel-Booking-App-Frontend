@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { BookingService } from '../../../services/booking.service';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-payment-checkout',
@@ -18,7 +19,12 @@ export class PaymentCheckoutComponent {
   status: number | undefined;
   totalAmount: number | undefined;
 
-  constructor(private router: Router, private bookingService: BookingService, private location: Location) {
+  constructor(
+    private router: Router, 
+    private bookingService: BookingService, 
+    private location: Location,
+    private toast: HotToastService
+  ) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as {
       roomId: number;
@@ -50,10 +56,15 @@ export class PaymentCheckoutComponent {
     }).subscribe({
       next: (response) => {
         console.log('Booking created successfully:', response);
-        alert('Payment Successful! Booking Confirmed.');
+        this.toast.success('Payment Successful! Booking Confirmed.');
+        // Navigate to booking confirmation or home after a delay
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 2000);
       },
       error: (error) => {
         console.error('Error creating booking:', error);
+        this.toast.error('Payment failed. Please try again.');
       }
     });
   }

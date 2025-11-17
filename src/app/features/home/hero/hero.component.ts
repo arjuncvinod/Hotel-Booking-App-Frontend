@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-hero',
@@ -14,7 +15,7 @@ export class HeroComponent {
   checkIn = '';
   checkOut = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toast: HotToastService) {}
 
   popularDestinations = [
     { name: 'Paris', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop' },
@@ -28,11 +29,11 @@ export class HeroComponent {
   searchHotels() {
 
     if (!this.location || !this.checkIn || !this.checkOut) {
-      alert('Please fill in all search fields.');
+      this.toast.warning('Please fill in all search fields.');
       return;
     }
     if(this.checkIn > this.checkOut){
-        alert('Check-in date cannot be later than check-out date.');
+        this.toast.warning('Check-in date cannot be later than check-out date.');
         return;
     }
 

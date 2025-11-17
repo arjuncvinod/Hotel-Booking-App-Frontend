@@ -1,0 +1,215 @@
+<div class="manage-hotels-container">
+  <div class="page-header">
+    <h1>Manage Hotels</h1>
+    <button class="btn-add-hotel" (click)="openAddModal()">+ Add Hotel</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <app-loader></app-loader>
+  </div>
+
+
+  <div *ngIf="!isLoading && hotels.length === 0" class="empty-state">
+    <p>No hotels found. Create your first hotel!</p>
+  </div>
+  <div *ngIf="!isLoading && hotels.length > 0" class="table-wrapper">
+    <table class="hotels-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Hotel Name</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>Country</th>
+          <th>Phone Number</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hotel of hotels" class="table-row">
+          <td class="hotel-id">{{ hotel.id }}</td>
+          <td class="hotel-name">
+            <strong>{{ hotel.name }}</strong>
+          </td>
+          <td>{{ hotel.address }}</td>
+          <td>{{ hotel.city }}</td>
+          <td>{{ hotel.country }}</td>
+          <td class="phone">
+            <a [href]="'tel:' + hotel.phoneNumber">{{ hotel.phoneNumber }}</a>
+          </td>
+          <td class="actions">
+            <button class="btn-edit" (click)="openEditModal(hotel)" title="Edit">✏️</button>
+            <button class="btn-delete" (click)="openDeleteModal(hotel)" title="Delete">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add Hotel Modal -->
+<app-modal *ngIf="showAddModal" (close)="closeAddModal()">
+  <div class="modal-form-container">
+    <h2>Add New Hotel</h2>
+    
+    <form (ngSubmit)="onSubmit()" #hotelFormElement="ngForm">
+      <div class="form-group">
+        <label for="name">Hotel Name *</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name"
+          [(ngModel)]="hotelForm.name" 
+          placeholder="Enter hotel name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address *</label>
+        <input 
+          type="text" 
+          id="address" 
+          name="address"
+          [(ngModel)]="hotelForm.address" 
+          placeholder="Enter address"
+          required
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="city">City *</label>
+          <input 
+            type="text" 
+            id="city" 
+            name="city"
+            [(ngModel)]="hotelForm.city" 
+            placeholder="Enter city"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country *</label>
+          <input 
+            type="text" 
+            id="country" 
+            name="country"
+            [(ngModel)]="hotelForm.country" 
+            placeholder="Enter country"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number *</label>
+        <input 
+          type="tel" 
+          id="phoneNumber" 
+          name="phoneNumber"
+          [(ngModel)]="hotelForm.phoneNumber" 
+          placeholder="Enter phone number"
+          required
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeAddModal()">Cancel</button>
+        <button type="submit" class="btn-submit">Add Hotel</button>
+      </div>
+    </form>
+  </div>
+</app-modal>
+
+<!-- Edit Hotel Modal -->
+<app-modal *ngIf="showEditModal" (close)="closeEditModal()">
+  <div class="modal-form-container">
+    <h2>Update Hotel</h2>
+    
+    <form (ngSubmit)="onSubmit()" #editFormElement="ngForm">
+      <div class="form-group">
+        <label for="edit-name">Hotel Name *</label>
+        <input 
+          type="text" 
+          id="edit-name" 
+          name="name"
+          [(ngModel)]="hotelForm.name" 
+          placeholder="Enter hotel name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-address">Address *</label>
+        <input 
+          type="text" 
+          id="edit-address" 
+          name="address"
+          [(ngModel)]="hotelForm.address" 
+          placeholder="Enter address"
+          required
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-city">City *</label>
+          <input 
+            type="text" 
+            id="edit-city" 
+            name="city"
+            [(ngModel)]="hotelForm.city" 
+            placeholder="Enter city"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="edit-country">Country *</label>
+          <input 
+            type="text" 
+            id="edit-country" 
+            name="country"
+            [(ngModel)]="hotelForm.country" 
+            placeholder="Enter country"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-phoneNumber">Phone Number *</label>
+        <input 
+          type="tel" 
+          id="edit-phoneNumber" 
+          name="phoneNumber"
+          [(ngModel)]="hotelForm.phoneNumber" 
+          placeholder="Enter phone number"
+          required
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeEditModal()">Cancel</button>
+        <button type="submit" class="btn-submit">Update Hotel</button>
+      </div>
+    </form>
+  </div>
+</app-modal>
+
+<!-- Delete Confirmation Modal -->
+<app-modal *ngIf="showDeleteModal" (close)="closeDeleteModal()">
+  <div class="delete-confirmation">
+    <div class="delete-icon">🗑️</div>
+    <h2>Delete Hotel?</h2>
+    <p>Are you sure you want to delete <strong>{{ selectedHotelName }}</strong>?</p>
+    <p class="warning-text">This action cannot be undone.</p>
+    
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="closeDeleteModal()">Cancel</button>
+      <button type="button" class="btn-delete-confirm" (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</app-modal>
