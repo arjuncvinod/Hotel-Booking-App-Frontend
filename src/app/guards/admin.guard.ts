@@ -15,6 +15,6 @@ export const customerGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
   if (auth.isCustomer()) return true;
-  router.navigate(['/']);
+  router.navigate(['/login']);
   return false;
 };

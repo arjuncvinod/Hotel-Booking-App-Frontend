@@ -40,10 +40,17 @@
 
       <!-- Payment Button -->
       <div class="button-group">
-        <button class="payment-btn" (click)="makePayment()">
-          Complete Payment
+        <button 
+          class="payment-btn" 
+          (click)="makePayment()"
+          [disabled]="isProcessing">
+          <span *ngIf="!isProcessing">Pay with Razorpay</span>
+          <span *ngIf="isProcessing">Processing...</span>
         </button>
-        <button class="cancel-btn" (click)="cancel()">
+        <button 
+          class="cancel-btn" 
+          (click)="cancel()"
+          [disabled]="isProcessing">
           Cancel
         </button>
       </div>
