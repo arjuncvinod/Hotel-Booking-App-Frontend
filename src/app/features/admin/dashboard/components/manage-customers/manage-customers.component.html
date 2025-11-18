@@ -1,0 +1,40 @@
+<div class="manage-customers-container">
+  <div class="page-header">
+    <h1>Manage Customers</h1>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <app-loader></app-loader>
+  </div>
+
+  <div *ngIf="!isLoading && customers.length === 0" class="empty-state">
+    <p>No customers found.</p>
+  </div>
+
+  <div *ngIf="!isLoading && customers.length > 0" class="table-wrapper">
+    <table class="customers-table">
+      <thead>
+        <tr>
+          <th>Customer ID</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>ID Proof Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers" class="table-row">
+          <td class="customer-id">{{ customer.id }}</td>
+          <td class="customer-name">{{ customer.fullName }}</td>
+          <td>
+            <a [href]="'mailto:' + customer.email">{{ customer.email }}</a>
+          </td>
+          <td class="phone">
+            <a [href]="'tel:' + customer.phoneNumber">{{ customer.phoneNumber }}</a>
+          </td>
+          <td>{{ customer.idproofNumber }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

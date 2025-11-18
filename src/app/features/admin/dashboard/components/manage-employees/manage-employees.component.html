@@ -1,7 +1,40 @@
-<p>manage-employees works!</p>
+<div class="manage-employees-container">
+  <div class="page-header">
+    <h1>Manage Employees</h1>
+  </div>
 
-<button (click)="showFormModal = true">Open Form Modal</button>
+  <div *ngIf="isLoading" class="loading-spinner">
+    <app-loader></app-loader>
+  </div>
 
-<app-modal *ngIf="showFormModal" (close)="showFormModal = false">
- 
-</app-modal>
+  <div *ngIf="!isLoading && employees.length === 0" class="empty-state">
+    <p>No employees found.</p>
+  </div>
+
+  <div *ngIf="!isLoading && employees.length > 0" class="table-wrapper">
+    <table class="employees-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Email</th>
+          <th>Hotel ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees" class="table-row">
+          <td class="employee-id">{{ employee.id }}</td>
+          <td class="employee-name">
+            <strong>{{ employee.fullName }}</strong>
+          </td>
+          <td>{{ employee.role }}</td>
+          <td>
+            <a [href]="'mailto:' + employee.email">{{ employee.email }}</a>
+          </td>
+          <td>{{ employee.hotelId }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

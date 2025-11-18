@@ -13,6 +13,9 @@ import { ManageEmployeesComponent } from './features/admin/dashboard/components/
 import { UserLoginComponent } from './features/home/user-login/user-login.component';
 import { BookingComponent } from './features/home/booking/booking.component';
 import { HotelDetailsComponentUser } from './features/home/hotel-details/hotel-details.component';
+import { ManageBookingsComponent } from './features/admin/dashboard/components/manage-bookings/manage-bookings.component';
+import { ManageCustomersComponent } from './features/admin/dashboard/components/manage-customers/manage-customers.component';
+import { ManageRoomTypesComponent } from './features/admin/dashboard/components/manage-room-types/manage-room-types.component';
 
 export const routes: Routes = [
     {
@@ -38,7 +41,12 @@ export const routes: Routes = [
             {path:'dashboard',component:DashboardComponent},
             {path:'manage-hotels',component:ManageHotelsComponent},
             {path:'manage-hotels/:id',component:HotelDetailsComponent},
+            {path:'manage-room-types',component:ManageRoomTypesComponent},
             {path:'manage-employees',component:ManageEmployeesComponent},
+            {path:'manage-bookings',component:ManageBookingsComponent},
+            {path:'manage-customers',component:ManageCustomersComponent},
+            {path:'',redirectTo:'dashboard',pathMatch:'full'}
+
         ],
         canActivate: [adminGuard]
     },

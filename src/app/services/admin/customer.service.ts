@@ -5,14 +5,11 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeService {
+export class CustomerService {
 
-   constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-
-   getEmployees(): any {
-     return this.http.get(`${environment.apiUrl}/employee`); 
-   }
-
-
+  getCustomers(): any {
+    return this.http.get(`${environment.apiUrl}/customer`); 
+  }
 }

@@ -1,0 +1,163 @@
+<div class="manage-room-types-container">
+  <div class="page-header">
+    <h1>Manage Room Types</h1>
+    <button class="btn-add-room-type" (click)="openAddModal()">+ Add Room Type</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <app-loader></app-loader>
+  </div>
+
+  <div *ngIf="!isLoading && roomTypes.length === 0" class="empty-state">
+    <p>No room types found. Add your first room type!</p>
+  </div>
+
+  <div *ngIf="!isLoading && roomTypes.length > 0" class="table-wrapper">
+    <table class="room-types-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type Name</th>
+          <th>Description</th>
+          <th>Capacity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let roomType of roomTypes" class="table-row">
+          <td class="room-type-id">{{ roomType.id }}</td>
+          <td class="room-type-name">
+            <strong>{{ roomType.typeName }}</strong>
+          </td>
+          <td class="description">{{ roomType.description }}</td>
+          <td class="capacity">{{ roomType.capacity }} {{ roomType.capacity === 1 ? 'person' : 'persons' }}</td>
+          <td class="actions">
+            <button class="btn-edit" (click)="openEditModal(roomType)" title="Edit">✏️</button>
+            <button class="btn-delete" (click)="openDeleteModal(roomType)" title="Delete">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add Room Type Modal -->
+<app-modal *ngIf="showAddModal" (close)="closeAddModal()">
+  <div class="modal-form-container">
+    <h2>Add New Room Type</h2>
+    
+    <form (ngSubmit)="onSubmit()" #roomTypeFormElement="ngForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="typeName">Room Type Name *</label>
+          <input 
+            type="text" 
+            id="typeName" 
+            name="typeName"
+            [(ngModel)]="roomTypeForm.typeName" 
+            placeholder="e.g., Single, Double, Suite"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="capacity">Capacity *</label>
+          <input 
+            type="number" 
+            id="capacity" 
+            name="capacity"
+            [(ngModel)]="roomTypeForm.capacity" 
+            placeholder="Number of persons"
+            min="1"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea 
+          id="description" 
+          name="description"
+          [(ngModel)]="roomTypeForm.description" 
+          placeholder="Describe this room type"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeAddModal()">Cancel</button>
+        <button type="submit" class="btn-submit">Add Room Type</button>
+      </div>
+    </form>
+  </div>
+</app-modal>
+
+<!-- Edit Room Type Modal -->
+<app-modal *ngIf="showEditModal" (close)="closeEditModal()">
+  <div class="modal-form-container">
+    <h2>Edit Room Type</h2>
+    
+    <form (ngSubmit)="onSubmit()" #editFormElement="ngForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-typeName">Room Type Name *</label>
+          <input 
+            type="text" 
+            id="edit-typeName" 
+            name="typeName"
+            [(ngModel)]="roomTypeForm.typeName" 
+            placeholder="e.g., Single, Double, Suite"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="edit-capacity">Capacity *</label>
+          <input 
+            type="number" 
+            id="edit-capacity" 
+            name="capacity"
+            [(ngModel)]="roomTypeForm.capacity" 
+            placeholder="Number of persons"
+            min="1"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-description">Description *</label>
+        <textarea 
+          id="edit-description" 
+          name="description"
+          [(ngModel)]="roomTypeForm.description" 
+          placeholder="Describe this room type"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeEditModal()">Cancel</button>
+        <button type="submit" class="btn-submit">Update Room Type</button>
+      </div>
+    </form>
+  </div>
+</app-modal>
+
+<!-- Delete Room Type Modal -->
+<app-modal *ngIf="showDeleteModal" (close)="closeDeleteModal()">
+  <div class="delete-confirmation">
+    <div class="delete-icon">🗑️</div>
+    <h2>Delete Room Type?</h2>
+    <p>Are you sure you want to delete <strong>{{ selectedRoomTypeName }}</strong>?</p>
+    <p class="warning-text">This action cannot be undone.</p>
+    
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="closeDeleteModal()">Cancel</button>
+      <button type="button" class="btn-delete-confirm" (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</app-modal>
