@@ -11,10 +11,16 @@
     Sign In
   </button>
   
-  <button 
-    *ngIf="isLoggedIn"
-    (click)="logout()" 
-    class="logout-btn">
-    Logout
-  </button>
+  <div *ngIf="isLoggedIn" class="button-group">
+    <button 
+      class="booking-btn"
+      routerLink="/booking">
+      My Bookings
+    </button>
+    <button 
+      (click)="logout()" 
+      class="logout-btn">
+      Logout
+    </button>
+  </div>
 </header>

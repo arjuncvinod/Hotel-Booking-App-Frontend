@@ -103,7 +103,7 @@ export class PaymentCheckoutComponent {
   private launchRazorpay(order: CreateOrderResponse, booking: any) {
     const options: any = {
       key: order.keyId,
-      amount: order.amountInPaise,     // Already in paise — DO NOT multiply!
+      amount: order.amountInPaise,     
       currency: order.currency,
       name: 'StayHub',
       description: `Booking #${booking.id}`,
@@ -163,7 +163,7 @@ export class PaymentCheckoutComponent {
 
         if (res.success) {
           this.toast.success('Payment Successful! Your room is confirmed');
-            this.location.back()
+            this.router.navigate(['/booking']);
         } else {
           this.toast.error('Payment failed or cancelled. Booking has been cancelled.');
          this.location.back()

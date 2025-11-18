@@ -15,4 +15,9 @@ export class BookingService {
   }
 
 
+  getBookingDetailsByCustomer(customerId: number) {
+    return this.http.get(`${environment.apiUrl}/booking/customer/${customerId}`);
+  }
+
+
 }

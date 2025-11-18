@@ -1,1 +1,94 @@
-<p>booking works!</p>
+<div class="bookings-container">
+  <div class="bookings-header">
+    <h1>My Bookings</h1>
+    <p class="subtitle">View and manage your hotel reservations</p>
+    
+    <!-- Filter Dropdown -->
+    <div *ngIf="!isLoading && bookings.length > 0" class="filter-dropdown">
+      <label for="status-filter">Filter by Status:</label>
+      <select 
+        id="status-filter"
+        [(ngModel)]="selectedFilter" 
+        (change)="filterBookings(selectedFilter)"
+        class="filter-select">
+        <option value="all">All</option>
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <app-loader></app-loader>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && bookings.length === 0" class="empty-state">
+    <svg class="empty-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+    </svg>
+    <h2>No Bookings Found</h2>
+    <p>You haven't made any bookings yet. Start exploring hotels!</p>
+    <a routerLink="/" class="explore-btn">Explore Hotels</a>
+  </div>
+
+  <!-- Bookings List -->
+  <div *ngIf="!isLoading && filteredBookings.length > 0" class="bookings-list">
+    <div class="booking-card" *ngFor="let booking of filteredBookings">
+      <div class="booking-header">
+        <div class="booking-id">
+          <span class="label">Booking ID:</span>
+          <span class="value">#{{ booking.id }}</span>
+        </div>
+        <span class="status-badge" [ngClass]="getStatusClass(booking.status)">
+          {{ getStatusText(booking.status) }}
+        </span>
+      </div>
+
+      <div class="booking-details">
+        <div class="detail-row">
+          <div class="detail-item">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            <div>
+              <span class="label">Room ID</span>
+              <span class="value">{{ booking.roomId }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <div>
+              <span class="label">Check-in</span>
+              <span class="value">{{ booking.checkInDate | date: 'MMM d, y' }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <div>
+              <span class="label">Check-out</span>
+              <span class="value">{{ booking.checkOutDate | date: 'MMM d, y' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-footer">
+          <div class="total-amount">
+            <span class="label">Total Amount</span>
+            <span class="amount">${{ booking.totalAmount }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

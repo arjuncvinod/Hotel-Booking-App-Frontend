@@ -11,6 +11,7 @@ import { PaymentCheckoutComponent } from './features/home/payment-checkout/payme
 import { ManageHotelsComponent } from './features/admin/dashboard/components/manage-hotels/manage-hotels.component';
 import { ManageEmployeesComponent } from './features/admin/dashboard/components/manage-employees/manage-employees.component';
 import { UserLoginComponent } from './features/home/user-login/user-login.component';
+import { BookingComponent } from './features/home/booking/booking.component';
 
 export const routes: Routes = [
     {
@@ -21,8 +22,8 @@ export const routes: Routes = [
             {path:'search',component:SearchResultsComponent},
             {path:'hotel',component:HotelDetailsComponent},
             {path:'payments/checkout',component:PaymentCheckoutComponent,canActivate:[customerGuard]},
-            {path:'login',component: UserLoginComponent}
-            {path:'',component:}
+            {path:'login',component: UserLoginComponent},
+            {path:'booking',component:BookingComponent,canActivate:[customerGuard]},
         ]
     },
     {
