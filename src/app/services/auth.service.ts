@@ -13,6 +13,8 @@ interface JwtPayload {
   email: string;
   role: string;
   exp: number;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'?: string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -76,6 +78,15 @@ export class AuthService {
 
   isCustomer(): boolean {
     return this.userSubject.value?.role === 'Customer';
+  }
+
+  getUserEmail(): string | null {
+    return this.userSubject.value?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? null;
+  }
+
+  getUserId(): number | null {
+    const id = this.userSubject.value?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+    return id ? parseInt(id, 10) : null;
   }
 
   refreshToken(): Observable<{ accessToken: string }> {

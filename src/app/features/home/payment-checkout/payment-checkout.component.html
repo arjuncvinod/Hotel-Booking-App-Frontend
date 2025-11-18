@@ -44,7 +44,7 @@
           class="payment-btn" 
           (click)="makePayment()"
           [disabled]="isProcessing">
-          <span *ngIf="!isProcessing">Pay with Razorpay</span>
+          <span *ngIf="!isProcessing">Pay</span>
           <span *ngIf="isProcessing">Processing...</span>
         </button>
         <button 

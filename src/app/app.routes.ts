@@ -22,6 +22,7 @@ export const routes: Routes = [
             {path:'hotel',component:HotelDetailsComponent},
             {path:'payments/checkout',component:PaymentCheckoutComponent,canActivate:[customerGuard]},
             {path:'login',component: UserLoginComponent}
+            {path:'',component:}
         ]
     },
     {
