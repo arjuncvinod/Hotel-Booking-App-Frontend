@@ -25,5 +25,28 @@ export class HotelService {
     return this.http.delete(`${environment.apiUrl}/hotel/${hotelId}`); 
   }
 
+  getHotelById(hotelId: number): any {
+    return this.http.get(`${environment.apiUrl}/hotel/${hotelId}`); 
+  }
+
+
+  addRoom(roomData: any): any {
+    return this.http.post(`${environment.apiUrl}/room`, roomData); 
+  }
+
+  getRoomTypes(): any {
+    return this.http.get(`${environment.apiUrl}/RoomType`); 
+  }
+
+  updateRoom(roomId: number, roomData: any): any {
+    return this.http.put(`${environment.apiUrl}/room/${roomId}`, roomData); 
+  }
+
+  deleteRoom(roomId: number): any {
+    return this.http.delete(`${environment.apiUrl}/room/${roomId}`); 
+  }
+
+  
+
 
 }

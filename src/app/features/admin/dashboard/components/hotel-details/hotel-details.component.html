@@ -1,0 +1,234 @@
+<div class="hotel-details-container">
+  <div *ngIf="isLoading" class="loading-state">
+    <app-loader></app-loader>
+  </div>
+
+  <div *ngIf="!isLoading && hotel" class="hotel-details">
+    <div class="details-header">
+      <h1>{{ hotel.name }}</h1>
+      <div class="hotel-info">
+        <p class="info-item">
+          <span class="label">📍 Address:</span>
+          <span class="value">{{ hotel.address }}, {{ hotel.city }}, {{ hotel.country }}</span>
+        </p>
+        <p class="info-item">
+          <span class="label">📞 Phone:</span>
+          <a [href]="'tel:' + hotel.phoneNumber" class="phone-link">{{ hotel.phoneNumber }}</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="rooms-section" *ngIf="hotel.rooms && hotel.rooms.length > 0">
+      <div class="rooms-header">
+        <h2>Available Rooms</h2>
+        <button class="btn-add-room" (click)="openAddRoomModal()">+ Add Room</button>
+      </div>
+      <div class="rooms-grid">
+        <div *ngFor="let room of hotel.rooms" class="room-card">
+          <div class="room-header">
+            <h3>Room {{ room.roomNumber }}</h3>
+            <span class="room-id">#{{ room.id }}</span>
+          </div>
+          
+          <div class="room-details">
+            <div class="detail-row">
+              <span class="label">Room Type ID:</span>
+              <span class="value">{{ room.roomTypeId }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Status:</span>
+              <span class="status-badge" [ngClass]="'status-' + room.status">
+                {{ room.status === 0 ? 'Available' : room.status === 1 ? 'Booked' : 'Under Maintenance' }}
+              </span>
+            </div>
+            <div class="detail-row price">
+              <span class="label">Price per Night:</span>
+              <span class="value price-amount">₹{{ room.pricePerNight | number: '1.2-2' }}</span>
+            </div>
+          </div>
+
+          <div class="room-actions">
+            <button class="btn-edit" (click)="openEditRoomModal(room)" title="Edit Room">✏️</button>
+            <button class="btn-delete" (click)="openDeleteRoomModal(room)" title="Delete Room">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!hotel.rooms || hotel.rooms.length === 0" class="empty-rooms">
+      <p>No rooms available for this hotel</p>
+      <button class="btn-add-room" (click)="openAddRoomModal()">+ Add First Room</button>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !hotel" class="error-state">
+    <p>Error loading hotel details</p>
+  </div>
+</div>
+
+<!-- Add Room Modal -->
+<app-modal *ngIf="showAddRoomModal" (close)="closeAddRoomModal()">
+  <div class="modal-form-container">
+    <h2>Add New Room</h2>
+    
+    <form [formGroup]="roomForm" (ngSubmit)="addRoom()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="roomNumber">Room Number *</label>
+          <input 
+            type="text" 
+            id="roomNumber" 
+            formControlName="roomNumber"
+            placeholder="e.g., 301"
+          />
+          <div *ngIf="roomForm.get('roomNumber')?.hasError('required') && roomForm.get('roomNumber')?.touched" class="error-message">
+            Room number is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pricePerNight">Price per Night *</label>
+          <input 
+            type="number" 
+            id="pricePerNight" 
+            formControlName="pricePerNight"
+            placeholder="Enter price"
+            min="0"
+            step="0.01"
+          />
+          <div *ngIf="roomForm.get('pricePerNight')?.hasError('required') && roomForm.get('pricePerNight')?.touched" class="error-message">
+            Price is required
+          </div>
+          <div *ngIf="roomForm.get('pricePerNight')?.hasError('min') && roomForm.get('pricePerNight')?.touched" class="error-message">
+            Price must be greater than 0
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="roomTypeId">Room Type *</label>
+          <select 
+            id="roomTypeId" 
+            formControlName="roomTypeId"
+          >
+            <option value="" disabled>Select Room Type</option>
+            <option *ngFor="let type of roomTypes" [value]="type.id">
+              {{ type.typeName }} ({{ type.capacity }} {{ type.capacity === 1 ? 'person' : 'persons' }})
+            </option>
+          </select>
+          <div *ngIf="roomForm.get('roomTypeId')?.hasError('required') && roomForm.get('roomTypeId')?.touched" class="error-message">
+            Room type is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status *</label>
+          <select 
+            id="status" 
+            formControlName="status"
+          >
+            <option [ngValue]="0">Available</option>
+            <option [ngValue]="2">Under Maintenance</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeAddRoomModal()" [disabled]="isAddingRoom">Cancel</button>
+        <button type="submit" class="btn-submit" [disabled]="isAddingRoom || roomForm.invalid">{{ isAddingRoom ? 'Adding...' : 'Add Room' }}</button>
+      </div>
+    </form>
+  </div>
+</app-modal>
+
+<!-- Edit Room Modal -->
+<app-modal *ngIf="showEditRoomModal" (close)="closeEditRoomModal()">
+  <div class="modal-form-container">
+    <h2>Edit Room</h2>
+    
+    <form [formGroup]="roomForm" (ngSubmit)="updateRoom()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editRoomNumber">Room Number *</label>
+          <input 
+            type="text" 
+            id="editRoomNumber" 
+            formControlName="roomNumber"
+            placeholder="e.g., 301"
+          />
+          <div *ngIf="roomForm.get('roomNumber')?.hasError('required') && roomForm.get('roomNumber')?.touched" class="error-message">
+            Room number is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editPricePerNight">Price per Night *</label>
+          <input 
+            type="number" 
+            id="editPricePerNight" 
+            formControlName="pricePerNight"
+            placeholder="Enter price"
+            min="0"
+            step="0.01"
+          />
+          <div *ngIf="roomForm.get('pricePerNight')?.hasError('required') && roomForm.get('pricePerNight')?.touched" class="error-message">
+            Price is required
+          </div>
+          <div *ngIf="roomForm.get('pricePerNight')?.hasError('min') && roomForm.get('pricePerNight')?.touched" class="error-message">
+            Price must be greater than 0
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editRoomTypeId">Room Type *</label>
+          <select 
+            id="editRoomTypeId" 
+            formControlName="roomTypeId"
+          >
+            <option value="" disabled>Select Room Type</option>
+            <option *ngFor="let type of roomTypes" [value]="type.id">
+              {{ type.typeName }} ({{ type.capacity }} {{ type.capacity === 1 ? 'person' : 'persons' }})
+            </option>
+          </select>
+          <div *ngIf="roomForm.get('roomTypeId')?.hasError('required') && roomForm.get('roomTypeId')?.touched" class="error-message">
+            Room type is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editStatus">Status *</label>
+          <select 
+            id="editStatus" 
+            formControlName="status"
+          >
+            <option [ngValue]="0">Available</option>
+            <option [ngValue]="2">Under Maintenance</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeEditRoomModal()" [disabled]="isEditingRoom">Cancel</button>
+        <button type="submit" class="btn-submit" [disabled]="isEditingRoom || roomForm.invalid">{{ isEditingRoom ? 'Updating...' : 'Update Room' }}</button>
+      </div>
+    </form>
+  </div>
+</app-modal>
+
+<!-- Delete Room Modal -->
+<app-modal *ngIf="showDeleteRoomModal" (close)="closeDeleteRoomModal()">
+  <div class="delete-confirmation">
+    <div class="delete-icon">🗑️</div>
+    <h2>Delete Room?</h2>
+    <p>Are you sure you want to delete <strong>Room {{ selectedRoomNumber }}</strong>?</p>
+    <p class="warning-text">This action cannot be undone.</p>
+    
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="closeDeleteRoomModal()" [disabled]="isDeleteMode">Cancel</button>
+      <button type="button" class="btn-delete-confirm" (click)="deleteRoom()" [disabled]="isDeleteMode">Delete</button>
+    </div>
+  </div>
+</app-modal>

@@ -5,10 +5,11 @@ import { HotelService } from '../../../../../services/admin/hotel.service';
 import { ModalComponent } from '../../../../../shared/modal/modal.component';
 import { LoaderComponent } from '../../../../../shared/loader/loader.component';
 import { HotToastService } from '@ngxpert/hot-toast';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-manage-hotels',
-  imports: [CommonModule, FormsModule, ModalComponent,LoaderComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, LoaderComponent, RouterLink],
   templateUrl: './manage-hotels.component.html',
   styleUrl: './manage-hotels.component.scss'
 })

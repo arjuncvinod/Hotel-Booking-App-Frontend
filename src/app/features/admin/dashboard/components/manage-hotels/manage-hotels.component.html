@@ -38,12 +38,13 @@
             <a [href]="'tel:' + hotel.phoneNumber">{{ hotel.phoneNumber }}</a>
           </td>
           <td class="actions">
+            <button class="btn-view" routerLink ="{{hotel.id}}" >View Hotel</button>
             <button class="btn-edit" (click)="openEditModal(hotel)" title="Edit">✏️</button>
             <button class="btn-delete" (click)="openDeleteModal(hotel)" title="Delete">🗑️</button>
           </td>
         </tr>
       </tbody>
-    </table>
+    </table>  
   </div>
 </div>
 

@@ -6,12 +6,13 @@ import { AdminLayoutComponent } from './core/layouts/admin-layout/admin-layout.c
 import { HeroComponent } from './features/home/hero/hero.component';
 import { SearchResultsComponent } from './features/home/search-results/search-results.component';
 import { adminGuard, customerGuard } from './guards/admin.guard';
-import { HotelDetailsComponent } from './features/home/hotel-details/hotel-details.component';
+import { HotelDetailsComponent } from './features/admin/dashboard/components/hotel-details/hotel-details.component';
 import { PaymentCheckoutComponent } from './features/home/payment-checkout/payment-checkout.component';
 import { ManageHotelsComponent } from './features/admin/dashboard/components/manage-hotels/manage-hotels.component';
 import { ManageEmployeesComponent } from './features/admin/dashboard/components/manage-employees/manage-employees.component';
 import { UserLoginComponent } from './features/home/user-login/user-login.component';
 import { BookingComponent } from './features/home/booking/booking.component';
+import { HotelDetailsComponentUser } from './features/home/hotel-details/hotel-details.component';
 
 export const routes: Routes = [
     {
@@ -20,7 +21,7 @@ export const routes: Routes = [
         children:[
             {path:'',component:HeroComponent},
             {path:'search',component:SearchResultsComponent},
-            {path:'hotel',component:HotelDetailsComponent},
+            {path:'hotel',component:HotelDetailsComponentUser},
             {path:'payments/checkout',component:PaymentCheckoutComponent,canActivate:[customerGuard]},
             {path:'login',component: UserLoginComponent},
             {path:'booking',component:BookingComponent,canActivate:[customerGuard]},
@@ -36,6 +37,7 @@ export const routes: Routes = [
         children:[
             {path:'dashboard',component:DashboardComponent},
             {path:'manage-hotels',component:ManageHotelsComponent},
+            {path:'manage-hotels/:id',component:HotelDetailsComponent},
             {path:'manage-employees',component:ManageEmployeesComponent},
         ],
         canActivate: [adminGuard]

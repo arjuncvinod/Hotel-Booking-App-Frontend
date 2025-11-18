@@ -39,12 +39,14 @@ export class AuthService {
   }
 
   private updateToken(accessToken: string) {
-    localStorage.setItem('access_token', accessToken);
     try {
       const payload = jwtDecode<JwtPayload>(accessToken);
+      localStorage.setItem('access_token', accessToken);
       this.userSubject.next(payload);
-    } catch {
-      this.logout();
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      localStorage.removeItem('access_token');
+      this.userSubject.next(null);
     }
   }
 

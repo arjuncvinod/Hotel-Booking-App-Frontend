@@ -210,6 +210,18 @@
                 background: #f0f9ff;
               }
 
+              &.btn-view {
+                width: auto;
+                padding: 0 1rem;
+                color: rgb(44, 44, 46);
+                font-weight: 600;
+                font-size: 0.875rem;
+
+                &:hover {
+                  background: #1d4fd813;
+                }
+              }
+
               &.btn-delete:hover {
                 border-color: #fecaca;
                 background: #fef2f2;

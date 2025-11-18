@@ -11,7 +11,7 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './hotel-details.component.html',
   styleUrl: './hotel-details.component.scss'
 })
-export class HotelDetailsComponent {
+export class HotelDetailsComponentUser {
 
   id: string | null = '';
   locationName: string | null = '';

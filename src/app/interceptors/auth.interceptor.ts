@@ -31,7 +31,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               isRefreshing = false;
               const newToken = res.accessToken;
               refreshTokenSubject.next(newToken);
-
+              console.log(res);
               return next(req.clone({
                 setHeaders: { Authorization: `Bearer ${newToken}` }
               }));
