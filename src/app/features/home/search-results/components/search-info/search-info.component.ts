@@ -20,7 +20,6 @@ isEditing = signal(false);
 
   toggleEdit() {
     if (this.isEditing()) {
-      // Apply changes - navigate with updated query params
       this.navigate();
     }
     this.isEditing.update(value => !value);

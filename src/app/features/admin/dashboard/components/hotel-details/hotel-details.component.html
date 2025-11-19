@@ -8,11 +8,9 @@
       <h1>{{ hotel.name }}</h1>
       <div class="hotel-info">
         <p class="info-item">
-          <span class="label">📍 Address:</span>
           <span class="value">{{ hotel.address }}, {{ hotel.city }}, {{ hotel.country }}</span>
         </p>
         <p class="info-item">
-          <span class="label">📞 Phone:</span>
           <a [href]="'tel:' + hotel.phoneNumber" class="phone-link">{{ hotel.phoneNumber }}</a>
         </p>
       </div>
@@ -38,7 +36,7 @@
             <div class="detail-row">
               <span class="label">Status:</span>
               <span class="status-badge" [ngClass]="'status-' + room.status">
-                {{ room.status === 0 ? 'Available' : room.status === 1 ? 'Booked' : 'Under Maintenance' }}
+                {{ room.status === 0 ? 'Available' : 'Under Maintenance' }}
               </span>
             </div>
             <div class="detail-row price">

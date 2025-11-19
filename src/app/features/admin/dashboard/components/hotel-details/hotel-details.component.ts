@@ -86,7 +86,6 @@ export class HotelDetailsComponent implements OnInit {
     });
   }
 
-  // Add Room Methods
   openAddRoomModal() {
     this.roomForm.reset({ status: 0 });
     this.showAddRoomModal = true;
@@ -130,7 +129,7 @@ export class HotelDetailsComponent implements OnInit {
     });
   }
 
-  // Edit Room Methods
+
   openEditRoomModal(room: any) {
     this.selectedRoomId = room.id;
     this.roomForm.patchValue({
@@ -180,7 +179,7 @@ export class HotelDetailsComponent implements OnInit {
     });
   }
 
-  // Delete Room Methods
+
   openDeleteRoomModal(room: any) {
     this.selectedRoomId = room.id;
     this.selectedRoomNumber = room.roomNumber;

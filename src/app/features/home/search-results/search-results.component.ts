@@ -5,10 +5,11 @@ import { SearchFilterComponent } from './components/search-filter/search-filter.
 import { SearchInfoComponent } from './components/search-info/search-info.component';
 import { HotelCardComponent } from './components/hotel-card/hotel-card.component';
 import { LoaderComponent } from '../../../shared/loader/loader.component';
+import { CapitalizeWordsPipe } from "../../../shared/capitalize-words.pipe";
 
 @Component({
   selector: 'app-search-results',
-  imports: [SearchFilterComponent,SearchInfoComponent,HotelCardComponent,LoaderComponent],
+  imports: [SearchFilterComponent, SearchInfoComponent, HotelCardComponent, LoaderComponent, CapitalizeWordsPipe],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })

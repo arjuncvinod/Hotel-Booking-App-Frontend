@@ -9,7 +9,7 @@
   </div>
   <div class="search-results">
     <div class="search-header">
-      <h3>{{ location }}: {{ hotels.length }} hotels found</h3>
+      <h3>{{ location | capitalizeWords }}: {{ hotels.length }} hotels found</h3>
       <div class="sort">
         <label for="sort-by">Sort by:</label>
         <select id="sort-by" (change)="onSortChange($any($event).target.value)">
