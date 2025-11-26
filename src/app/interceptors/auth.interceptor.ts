@@ -16,7 +16,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       setHeaders: { Authorization: `Bearer ${token}` }
     });
   }
-
+  
   return next(req).pipe(
     catchError(err => {
 
@@ -44,7 +44,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           );
         } else {
           return refreshTokenSubject.pipe(
-            filter(token => token !== null),
+            filter(token => token !== null), 
             take(1),
             switchMap(token => {
               return next(req.clone({
